@@ -1,0 +1,43 @@
+.header {
+  height: 5vmin;
+}
+
+.title {
+  font-size: calc(10px + 2vmin);
+  display: flex;
+  padding: 2px;
+  justify-content: center;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  height: 10vmin;
+  padding: 5vmin;
+  min-width: 5vmin;
+}
+
+.vehicleOptions {
+  /* display: flex;
+  align-items: flex-start; */
+}
+
+.vehicleOptionsDisabled {
+
+  color: #C7C8CB;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.value {
+  display: flex;
+  flex-direction: row;
+}
+
+.heading {
+  padding: 2vmin
+}
