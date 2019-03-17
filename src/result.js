@@ -18,7 +18,7 @@ class Result extends Component {
             {
               this.props.location.state.data.status === "success" &&
               <div className="titlemain">
-                <label> Success ! Congragulation on Finding Falcone. King Shan is mighty pleased.</label><br/>
+                <label> Success ! Congragulations on Finding Falcone. King Shan is mighty pleased.</label><br/>
                 <label> Time taken: {Object.values(this.props.location.state.time).reduce(function(a, b) { return a + b; }, 0)} </label><br/>
                 <label> Planet found: {this.props.location.state.data.planet_name} </label><br/>
               </div>

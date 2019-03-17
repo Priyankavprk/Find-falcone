@@ -8,9 +8,7 @@ class Dropdownmenu extends Component {
     super();
     this.state = {
       valueSelected: "Select",
-      vehicles: [],
       selectedVehicle: null,
-      availableVehicles: [],
       planetSelected: null
     }
     this.handlePlanetSelected = this.handlePlanetSelected.bind(this)
