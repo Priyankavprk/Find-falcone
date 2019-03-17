@@ -29,14 +29,34 @@
   flex-direction: row;
   justify-content: space-around;
   min-height: 40vmin;
+  flex-wrap: wrap;
 }
 
 .timeText {
   min-width: 30vmin;
 }
 
+.icon {
+  height: 20vmin;
+}
+
+.titlemain {
+  font-size: calc(20px + 2vmin);
+}
+
+.image {
+  display: flex;
+  flex-wrap: wrap;
+  align-self: flex-start;
+}
+
 .button {
-  /* padding: 2vmin */
+  padding: 10vmin;
+}
+
+.loading {
+  text-align: center;
+  padding: 50vmin;
 }
 
 @keyframes App-logo-spin {

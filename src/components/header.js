@@ -8,7 +8,7 @@ class Header extends Component {
     return (
       <Navbar className="header">
         <Navbar.Brand className="title">Finding Falcone!</Navbar.Brand>
-      </Navbar>
+      </Navbar>  
     );
   }
 }

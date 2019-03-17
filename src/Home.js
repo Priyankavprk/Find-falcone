@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import Footer from './components/footer';
 import Header from './components/header';
 import Dropdown from './components/dropDown';
-// import logo from './logo.svg';
+import logo from './king.png';
 import './App.css';
 
-class App extends Component {
+class Home extends Component {
   constructor() {
     super()
     this.state = {
@@ -85,9 +86,9 @@ class App extends Component {
       method: 'POST',
       headers: {
          'Content-Type': 'application/json',
+         'Accept': 'application/json',
       }
     }).then((res) => {
-      this.findFalcone()
       if(!res.ok) {
         throw Error(res)
       }
@@ -95,22 +96,14 @@ class App extends Component {
     })
     .then((res) => res.json())
     .then((data) => {
-      this.setState({
-        token: data.token
-      })
-      this.findFalcone()
+      this.findFalcone(data.token)
     })
     .catch(
-      (error) => console.log('Failed to get token',error)
+      (error) => console.log('Failed to get token', error.message)
     )
   }
 
-  findFalcone() {
-    console.log('ooooooeooeoeoeoeo',{
-      token: 'zWSOZUcQJOPUweUgYklARgNbuNVCyin',
-      planet_names: this.state.destinationsSelected,
-      vehicle_names: Object.values(this.state.usedVehicles)
-    })
+  findFalcone(token) {
     fetch('https://findfalcone.herokuapp.com/find', {
       method: 'POST',
       headers: {
@@ -118,13 +111,23 @@ class App extends Component {
          'Accept': 'application/json',
       },
       body: JSON.stringify({
-        token: 'zWSOZUcQJOPUweUgYklARgNbuNVCyin',
+        token: token,
         planet_names: this.state.destinationsSelected,
         vehicle_names: Object.values(this.state.usedVehicles)
       })
     })
     .then((res) => {
-      console.log('mmmmmmmmmmmmmmfind',res)
+      if(!res.ok) {
+        throw Error(res)
+      }
+      return res
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      this.props.history.push({pathname: '/result', state: { data: data, time: this.state.data }});
+    })
+    .catch((error) => {
+      console.log('Failed to fetch result', error.message)
     })
   }
 
@@ -133,28 +136,31 @@ class App extends Component {
       return (
         <div className="App">
           <Header />
-          <header className="App-header">
-          <div>Select planet you want to search in </div>
-          <div className="body">
-            <Dropdown value={1} options={this.state.options} handlePlanetSelected={this.handlePlanetSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
-            <Dropdown value={2} options={this.state.options} handlePlanetSelected={this.handlePlanetSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
-            <Dropdown value={3} options={this.state.options} handlePlanetSelected={this.handlePlanetSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
-            <Dropdown value={4} options={this.state.options} handlePlanetSelected={this.handlePlanetSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
-            <div className="timeText">Time taken : {Object.values(this.state.data).reduce(function(a, b) { return a + b; }, 0)}</div>
+            <header className="App-header">
+              <div className="image">
+                <img className="icon" src={logo} alt="image"/>
+              </div>
+              <div className="titlemain">Select planet you want to search in </div>
+              <div className="body">
+                <Dropdown value={1} options={this.state.options} handlePlanetSelected={this.handlePlanetSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
+                <Dropdown value={2} options={this.state.options} handlePlanetSelected={this.handlePlanetSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
+                <Dropdown value={3} options={this.state.options} handlePlanetSelected={this.handlePlanetSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
+                <Dropdown value={4} options={this.state.options} handlePlanetSelected={this.handlePlanetSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
+                <div className="timeText">Time taken : {Object.values(this.state.data).reduce(function(a, b) { return a + b; }, 0)}</div>
+              </div>
+             <div>
+                <input type="submit" onClick={this.getToken} value="Find Falcone !" disabled={(this.state.destinationsSelected.length === 4 && Object.values(this.state.usedVehicles).length === 4) ? false : true}/>
+             </div>
+             </header>
+             <Footer />
           </div>
-          <div className="button">
-            <input type="submit" onClick={this.getToken} value="Find Falcone !" disabled={(this.state.destinationsSelected.length === 4 && Object.values(this.state.usedVehicles).length === 4) ? false : true}/>
-          </div>
-          </header>
-          <Footer />
-        </div>
       );
     } else {
       return (
-        <div> Loading ... </div>
+        <div className="loading"> Loading ... </div>
       )
     }
   }
 }
 
-export default App;
+export default Home;
