@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 import Footer from './components/footer';
 import Header from './components/header';
@@ -11,9 +10,7 @@ class Home extends Component {
   constructor() {
     super()
     this.state = {
-      planets: null,
       destinationsSelected: [],
-      timeTaken: 0,
       data: {},
       usedVehicles: {},
       options: {},
@@ -25,29 +22,38 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    fetch(`https://findfalcone.herokuapp.com/planets`)
-    .then((res) => {
-      return res.json()
-    }).then((data)=> {
-      this.setState({
-        options: {
-          planets: [{name: 'Select'}, ...data]
-        },
-      })
-    }).then(() => {
-      fetch(`https://findfalcone.herokuapp.com/vehicles`)
+    if(!this.state.options.planet && !this.state.options.vehicles) {
+      fetch(`https://findfalcone.herokuapp.com/planets`)
       .then((res) => {
+        if(!res.ok) {
+          throw Error(res)
+        }
         return res.json()
-      }).then((data) => {
+      }).then((data)=> {
         this.setState({
-        options: Object.assign({},this.state.options,
-          {
-            vehicles: [...data]
+          options: {
+            planets: [{name: 'Select'}, ...data]
+          },
+        })
+      }).then(() => {
+        fetch(`https://findfalcone.herokuapp.com/vehicles`)
+        .then((res) => {
+          if(!res.ok) {
+            throw Error(res)
           }
-        ),
+          return res.json()
+        }).then((data) => {
+          this.setState({
+          options: Object.assign({},this.state.options,
+            {
+              vehicles: [...data]
+            }
+          ),
+          })
         })
       })
-    })
+      .catch((error) => console.log('Request failed', error.message))
+    }
   }
 
   handlePlanetSelected(event, value, time, key, vehicle) {
@@ -138,7 +144,7 @@ class Home extends Component {
           <Header />
             <header className="App-header">
               <div className="image">
-                <img className="icon" src={logo} alt="image"/>
+                <img className="icon" src={logo} alt="king"/>
               </div>
               <div className="titlemain">Select planet you want to search in </div>
               <div className="body">

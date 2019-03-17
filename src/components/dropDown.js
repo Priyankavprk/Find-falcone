@@ -36,15 +36,15 @@ class Dropdownmenu extends Component {
   }
 
   showPlanets() {
-    if (this.props.options.planets) {
+    if (this.props.options && this.props.options.planets) {
     let listItems = this.props.options.planets.map((planet, j) => {
       if(planet.name !== this.state.valueSelected && !this.props.destinationsSelected.includes(planet.name)) {
         if(j === 0) {
           return <option key={j} defaultValue="Select" disabled hidden value={planet.name} className="planetList">{planet.name}</option>
         }
-        return <option key={j} value={planet.name}>{planet.name}</option>
+        return <option key={j} value={planet.name} className="planetList">{planet.name}</option>
       } else if(planet.name === this.state.valueSelected) {
-        return <option key={j} selected value={planet.name}>{planet.name}</option>
+        return <option key={j} selected value={planet.name} className="planetList">{planet.name}</option>
       }
     })
     return listItems
@@ -52,7 +52,7 @@ class Dropdownmenu extends Component {
   }
 
   showVehicles() {
-    if(this.props.options.vehicles) {
+    if(this.props.options && this.props.options.vehicles) {
       let vehicleList = this.props.options.vehicles.map((vehicle, j) => {
         let count = []
         count = Object.values(this.props.usedVehicles).filter((v) => {
@@ -109,7 +109,7 @@ class Dropdownmenu extends Component {
         <div className="container">
         <div className="menu">
         <div className="heading">Destination {this.props.value}</div>
-        <select id="planet" value={this.state.valueSelected} onChange={this.handlePlanetSelected}>
+        <select id="planet" className="planetSelect" value={this.state.valueSelected} onChange={this.handlePlanetSelected}>
         {
          this.showPlanets()
         }

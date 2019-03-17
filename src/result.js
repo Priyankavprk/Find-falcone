@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 import Footer from './components/footer';
 import Header from './components/header';
@@ -8,13 +7,13 @@ import './App.css';
 
 class Result extends Component {
   render() {
-    if (this.props.location.state.data) {
+    if (this.props.location && this.props.location.state.data) {
       return (
         <div className="App">
           <Header />
           <header className="App-header">
             <div className="image">
-              <img className="icon" src={logo} alt="image"/>
+              <img className="icon" src={logo} alt="king"/>
             </div>
             {
               this.props.location.state.data.status === "success" &&
