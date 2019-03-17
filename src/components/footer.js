@@ -7,7 +7,7 @@ class Footer extends Component {
   render() {
     return (
       <Navbar className="header">
-        <Navbar.Brand className="title">Finding Falcone!</Navbar.Brand>
+        <Navbar.Brand className="title">Mission Find Falcone</Navbar.Brand>
       </Navbar>
     );
   }
