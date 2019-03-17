@@ -10,19 +10,18 @@ class Home extends Component {
   constructor() {
     super()
     this.state = {
-      destinationsSelected: [],
+      destinationsSelected: {},
       data: {},
       usedVehicles: {},
       options: {},
       token: null,
     }
-    this.handlePlanetSelected = this.handlePlanetSelected.bind(this)
+    this.handleDataSelected = this.handleDataSelected.bind(this)
     this.findFalcone = this.findFalcone.bind(this)
     this.getToken = this.getToken.bind(this)
   }
 
   componentDidMount() {
-    if(!this.state.options.planet && !this.state.options.vehicles) {
       fetch(`https://findfalcone.herokuapp.com/planets`)
       .then((res) => {
         if(!res.ok) {
@@ -53,24 +52,17 @@ class Home extends Component {
         })
       })
       .catch((error) => console.log('Request failed', error.message))
-    }
   }
 
-  handlePlanetSelected(event, value, time, key, vehicle) {
-    if(event) {
-      if(value !== "Select" && value) {
-        this.state.destinationsSelected[this.state.destinationsSelected.indexOf(value)] = event
-        // this.setState({
-        //   destinationsSelected: [...(this.state.destinationsSelected.slice(1,this.state.destinationsSelected.indexOf(value))), event, ...(this.state.destinationsSelected.slice(this.state.destinationsSelected.indexOf(value) + 1, this.state.destinationsSelected.length))]
-        // })
-        this.setState({
-          destinationsSelected: [...this.state.destinationsSelected]
-        })
-      } else {
-        this.setState({
-          destinationsSelected: [...this.state.destinationsSelected, event]
-        })
-      }
+  handleDataSelected(value, key, time, vehicle) {
+    if(value) {
+      this.setState({
+        destinationsSelected: Object.assign({},this.state.destinationsSelected,
+          {
+            [key]: value,
+          }
+        ),
+      })
     } else {
       this.setState({
         data: Object.assign({},this.state.data,
@@ -118,7 +110,7 @@ class Home extends Component {
       },
       body: JSON.stringify({
         token: token,
-        planet_names: this.state.destinationsSelected,
+        planet_names: Object.values(this.state.destinationsSelected),
         vehicle_names: Object.values(this.state.usedVehicles)
       })
     })
@@ -148,14 +140,14 @@ class Home extends Component {
               </div>
               <div className="titlemain">Select planet you want to search in </div>
               <div className="body">
-                <Dropdown value={1} options={this.state.options} handlePlanetSelected={this.handlePlanetSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
-                <Dropdown value={2} options={this.state.options} handlePlanetSelected={this.handlePlanetSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
-                <Dropdown value={3} options={this.state.options} handlePlanetSelected={this.handlePlanetSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
-                <Dropdown value={4} options={this.state.options} handlePlanetSelected={this.handlePlanetSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
+                <Dropdown value={1} options={this.state.options} handleDataSelected={this.handleDataSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
+                <Dropdown value={2} options={this.state.options} handleDataSelected={this.handleDataSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
+                <Dropdown value={3} options={this.state.options} handleDataSelected={this.handleDataSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
+                <Dropdown value={4} options={this.state.options} handleDataSelected={this.handleDataSelected} destinationsSelected={this.state.destinationsSelected} usedVehicles={this.state.usedVehicles}/>
                 <div className="timeText">Time taken : {Object.values(this.state.data).reduce(function(a, b) { return a + b; }, 0)}</div>
               </div>
              <div>
-                <input type="submit" onClick={this.getToken} value="Find Falcone !" disabled={(this.state.destinationsSelected.length === 4 && Object.values(this.state.usedVehicles).length === 4) ? false : true}/>
+                <input type="submit" onClick={this.getToken} value="Find Falcone !" disabled={(Object.values(this.state.destinationsSelected).length === 4 && Object.values(this.state.usedVehicles).length === 4) ? false : true}/>
              </div>
              </header>
              <Footer />

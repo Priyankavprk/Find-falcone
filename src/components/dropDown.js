@@ -18,13 +18,9 @@ class Dropdownmenu extends Component {
   }
 
   handlePlanetSelected(event) {
-    let planet = this.props.options.planets.filter((planet) => {
-      if(planet.name === event.target.value) {
-        return planet
-      }
-    })
-    if(typeof this.props.handlePlanetSelected === 'function') {
-      this.props.handlePlanetSelected(event.target.value, this.state.valueSelected)
+    let planet = this.props.options.planets.filter((planet) => planet.name === event.target.value)
+    if(typeof this.props.handleDataSelected === 'function') {
+      this.props.handleDataSelected(event.target.value, this.props.value)
       this.setState({
         valueSelected: event.target.value,
         planetSelected: planet
@@ -38,14 +34,15 @@ class Dropdownmenu extends Component {
   showPlanets() {
     if (this.props.options && this.props.options.planets) {
     let listItems = this.props.options.planets.map((planet, j) => {
-      if(planet.name !== this.state.valueSelected && !this.props.destinationsSelected.includes(planet.name)) {
+      if(planet.name !== this.state.valueSelected && !(Object.values(this.props.destinationsSelected).includes(planet.name))) {
         if(j === 0) {
           return <option key={j} defaultValue="Select" disabled hidden value={planet.name} className="planetList">{planet.name}</option>
         }
         return <option key={j} value={planet.name} className="planetList">{planet.name}</option>
       } else if(planet.name === this.state.valueSelected) {
-        return <option key={j} selected value={planet.name} className="planetList">{planet.name}</option>
+        return <option key={j} defaultValue value={planet.name} className="planetList">{planet.name}</option>
       }
+      return null
     })
     return listItems
   }
@@ -55,11 +52,7 @@ class Dropdownmenu extends Component {
     if(this.props.options && this.props.options.vehicles) {
       let vehicleList = this.props.options.vehicles.map((vehicle, j) => {
         let count = []
-        count = Object.values(this.props.usedVehicles).filter((v) => {
-          if(vehicle.name === v) {
-            return v
-          }
-        })
+        count = Object.values(this.props.usedVehicles).filter((v) => vehicle.name === v)
         if(vehicle.max_distance >= this.state.planetSelected[0].distance) {
           if(vehicle.total_no - count.length === 0 && vehicle.name !== this.state.selectedVehicle) {
             return (
@@ -71,29 +64,22 @@ class Dropdownmenu extends Component {
           } else {
             return (
               <label key={j}>
-               <input className= "vehicleOptions" type="radio" value={vehicle.name} name={`vehicle+${this.props.value}`}/>
+               <input type="radio" value={vehicle.name} name={`vehicle+${this.props.value}`}/>
                {vehicle.name} ({vehicle.total_no - count.length})<br/>
               </label>
             )
           }
         }
+        return null
       })
       return vehicleList
     }
   }
 
   findTimeTaken() {
-    let planet = this.props.options.planets.filter((data) => {
-      if(data.name === this.state.valueSelected) {
-        return data.distance
-      }
-    })
-    let vehicle = this.props.options.vehicles.filter((data) => {
-      if(data.name === this.state.selectedVehicle) {
-        return data.speed
-      }
-    })
-    this.props.handlePlanetSelected(null, null, planet[0].distance/vehicle[0].speed, this.props.value, vehicle)
+    let planet = this.props.options.planets.filter((data) => data.name === this.state.valueSelected)
+    let vehicle = this.props.options.vehicles.filter((data) => data.name === this.state.selectedVehicle)
+    this.props.handleDataSelected(null, this.props.value, planet[0].distance/vehicle[0].speed, vehicle)
   }
 
   setVehicle(event) {

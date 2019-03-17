@@ -17,13 +17,7 @@
   min-width: 5vmin;
 }
 
-.vehicleOptions {
-  /* display: flex;
-  align-items: flex-start; */
-}
-
 .vehicleOptionsDisabled {
-
   color: #C7C8CB;
 }
 
