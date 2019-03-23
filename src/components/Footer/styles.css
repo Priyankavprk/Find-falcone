@@ -1,0 +1,10 @@
+.header {
+  height: 5vmin;
+}
+
+.title {
+  font-size: calc(10px + 2vmin);
+  display: flex;
+  padding: 2px;
+  justify-content: center;
+}

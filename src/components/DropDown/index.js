@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import '../../node_modules/font-awesome/css/font-awesome.min.css';
-import './style.css';
+import { handlePlanetSelected, handleVehicleSelected, setTime } from '../../actions';
+import '../../../node_modules/font-awesome/css/font-awesome.min.css';
+import './styles.css';
 
 class Dropdownmenu extends Component {
   constructor() {
@@ -16,14 +18,12 @@ class Dropdownmenu extends Component {
   }
 
   handlePlanetSelected(event) {
+    this.props.handlePlanetSelected(this.props.value, event.target.value)
     let planet = this.props.options.planets.filter((planet) => planet.name === event.target.value)
-    if(typeof this.props.handleDataSelected === 'function') {
-      this.props.handleDataSelected(event.target.value, this.props.value)
-      this.setState({
-        valueSelected: event.target.value,
-        planetSelected: planet
-      })
-    }
+    this.setState({
+      valueSelected: event.target.value,
+      planetSelected: planet
+    })
     if(this.state.selectedVehicle) {
       this.findTimeTaken()
     }
@@ -77,10 +77,11 @@ class Dropdownmenu extends Component {
   findTimeTaken() {
     let planet = this.props.options.planets.filter((data) => data.name === this.state.valueSelected)
     let vehicle = this.props.options.vehicles.filter((data) => data.name === this.state.selectedVehicle)
-    this.props.handleDataSelected(null, this.props.value, planet[0].distance/vehicle[0].speed, vehicle)
+    this.props.setTime(this.props.value, planet[0].distance/vehicle[0].speed)
   }
 
   setVehicle(event) {
+    this.props.handleVehicleSelected(this.props.value, event.target.value)
     this.setState({
       selectedVehicle: event.target.value
     }, () => {
@@ -112,4 +113,19 @@ class Dropdownmenu extends Component {
   }
 }
 
-export default Dropdownmenu;
+const mapStateToProps = state => ({
+  destinationsSelected: state.list.destinationsSelected,
+  options: state.list.options,
+  usedVehicles: state.list.usedVehicles,
+})
+
+const mapDispatchToProps = dispatch => ({
+  handlePlanetSelected: (key, data) => dispatch(handlePlanetSelected(key, data)),
+  handleVehicleSelected: (key, data) => dispatch(handleVehicleSelected(key, data)),
+  setTime: (key, data) => dispatch(setTime(key, data)),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Dropdownmenu)
