@@ -4,11 +4,11 @@ import { mount } from "enzyme";
 import Enzyme from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import Home from './Home';
-import Result from './Result';
-import Dropdown from './components/dropDown';
-import Header from './components/header';
-import Footer from './components/footer';
+import { Home } from './pages/home';
+import { Result } from './pages/result';
+import { Dropdown } from './components/DropDown';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -36,14 +36,15 @@ describe("Dropdown", () => {
     it("contains everything else that gets rendered", () => {
       const divs = dropDown().find("div");
       const wrappingDiv = divs.first();
-      // expect(wrappingDiv.children()).toEqual(dropDown().children());
+      expect(wrappingDiv.children()).toEqual(dropDown().children());
     });
   });
 })
 
 it('Home renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<Home />, div);
+  const getDataMock = jest.fn();
+  ReactDOM.render(<Home getData={getDataMock}/>, div);
   ReactDOM.unmountComponentAtNode(div);
 });
 

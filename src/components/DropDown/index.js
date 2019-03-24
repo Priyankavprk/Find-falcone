@@ -5,7 +5,7 @@ import { handlePlanetSelected, handleVehicleSelected, setTime } from '../../acti
 import '../../../node_modules/font-awesome/css/font-awesome.min.css';
 import './styles.css';
 
-class Dropdownmenu extends Component {
+export class Dropdownmenu extends Component {
   constructor() {
     super();
     this.state = {
@@ -33,7 +33,7 @@ class Dropdownmenu extends Component {
     if (this.props.options && this.props.options.planets) {
     let listItems = this.props.options.planets.map((planet, j) => {
       if(planet.name !== this.state.valueSelected && !(Object.values(this.props.destinationsSelected).includes(planet.name))) {
-        if(j === 0) {
+        if (j === 0) {
           return <option key={j} defaultValue="Select" disabled hidden value={planet.name} className="planetList">{planet.name}</option>
         }
         return <option key={j} value={planet.name} className="planetList">{planet.name}</option>
@@ -43,7 +43,7 @@ class Dropdownmenu extends Component {
       return null
     })
     return listItems
-  }
+   }
   }
 
   showVehicles() {
@@ -52,7 +52,7 @@ class Dropdownmenu extends Component {
         let count = []
         count = Object.values(this.props.usedVehicles).filter((v) => vehicle.name === v)
         if(vehicle.max_distance >= this.state.planetSelected[0].distance) {
-          if(vehicle.total_no - count.length === 0 && vehicle.name !== this.state.selectedVehicle) {
+          if(vehicle.total_no - count.length === 0 && vehicle.name !== this.state.selectedVehicle[0].name) {
             return (
               <label className= "vehicleOptionsDisabled" key={j}>
                <input type="radio" value={vehicle.name} name={`vehicle+${this.props.value}`} disabled/>
@@ -75,15 +75,14 @@ class Dropdownmenu extends Component {
   }
 
   findTimeTaken() {
-    let planet = this.props.options.planets.filter((data) => data.name === this.state.valueSelected)
-    let vehicle = this.props.options.vehicles.filter((data) => data.name === this.state.selectedVehicle)
-    this.props.setTime(this.props.value, planet[0].distance/vehicle[0].speed)
+    this.props.setTime(this.props.value, this.state.planetSelected[0].distance/this.state.selectedVehicle[0].speed)
   }
 
   setVehicle(event) {
     this.props.handleVehicleSelected(this.props.value, event.target.value)
+    let vehicle = this.props.options.vehicles.filter((data) => data.name === event.target.value)
     this.setState({
-      selectedVehicle: event.target.value
+      selectedVehicle: vehicle
     }, () => {
         this.findTimeTaken()
     })

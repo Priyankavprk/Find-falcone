@@ -3,7 +3,7 @@ import { Navbar } from 'react-bootstrap';
 
 import './styles.css';
 
-class Header extends Component {
+export class Header extends Component {
   render() {
     return (
       <Navbar className="header">

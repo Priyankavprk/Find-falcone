@@ -6,7 +6,7 @@ import Header from '../../components/Header';
 import logo from '../../king.png';
 import '../App.css';
 
-class Result extends Component {
+export class Result extends Component {
   render() {
     if (this.props.data) {
       return (

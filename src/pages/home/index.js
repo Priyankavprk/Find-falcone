@@ -9,13 +9,13 @@ import Dropdown from '../../components/DropDown';
 import logo from '../../king.png';
 import '../App.css';
 
-class Home extends Component {
+export class Home extends Component {
   componentDidMount() {
     this.props.getData()
   }
 
   render() {
-    if (this.props.options.planets) {
+    if (this.props.options && this.props.options.planets) {
       return (
         <div className="App">
           <Header />
