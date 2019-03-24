@@ -53,7 +53,7 @@ export class Dropdownmenu extends Component {
         count = Object.values(this.props.usedVehicles).filter((v) => vehicle.name === v)
         //Show vehicles that can cover the distance of planet selected
         if(vehicle.max_distance >= this.state.planetSelected[0].distance) {
-          if(vehicle.total_no - count.length === 0 && vehicle.name !== this.state.selectedVehicle[0].name) {
+          if(vehicle.total_no - count.length === 0 && vehicle.name !== this.state.selectedVehicle) {
             return (
               <label className= "vehicleOptionsDisabled" key={j}>
                <input type="radio" value={vehicle.name} name={`vehicle+${this.props.value}`} disabled/>
@@ -76,14 +76,15 @@ export class Dropdownmenu extends Component {
   }
 
   findTimeTaken() {
-    this.props.setTime(this.props.value, this.state.planetSelected[0].distance/this.state.selectedVehicle[0].speed)
+    let planet = this.props.options.planets.filter((data) => data.name === this.state.valueSelected)
+    let vehicle = this.props.options.vehicles.filter((data) => data.name === this.state.selectedVehicle)
+    this.props.setTime(this.props.value, planet[0].distance/vehicle[0].speed)
   }
 
   setVehicle(event) {
     this.props.handleVehicleSelected(this.props.value, event.target.value)
-    let vehicle = this.props.options.vehicles.filter((data) => data.name === event.target.value)
     this.setState({
-      selectedVehicle: vehicle
+      selectedVehicle: event.target.value
     }, () => {
         this.findTimeTaken()
     })
