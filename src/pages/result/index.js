@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
@@ -43,6 +44,12 @@ export class Result extends Component {
       )
     }
   }
+}
+
+Result.propTypes = {
+  successPlanet: PropTypes.string,
+  status: PropTypes.string,
+  data: PropTypes.object
 }
 
 const mapStateToProps = state => ({

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { handlePlanetSelected, handleVehicleSelected, setTime } from '../../actions';
 import '../../../node_modules/font-awesome/css/font-awesome.min.css';
@@ -112,6 +113,12 @@ export class Dropdownmenu extends Component {
         </div>
     );
   }
+}
+
+Dropdownmenu.propTypes = {
+  destinationsSelected: PropTypes.object,
+  options: PropTypes.object,
+  usedVehicles: PropTypes.object
 }
 
 const mapStateToProps = state => ({

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 import { getData, getToken } from '../../actions';
 import Footer from '../../components/Footer';
@@ -44,6 +44,13 @@ export class Home extends Component {
       )
     }
   }
+}
+
+Home.propTypes = {
+  options: PropTypes.object,
+  destinationsSelected: PropTypes.object,
+  usedVehicles: PropTypes.object,
+  data: PropTypes.object
 }
 
 const mapStateToProps = state => ({
