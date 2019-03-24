@@ -51,6 +51,7 @@ export class Dropdownmenu extends Component {
       let vehicleList = this.props.options.vehicles.map((vehicle, j) => {
         let count = []
         count = Object.values(this.props.usedVehicles).filter((v) => vehicle.name === v)
+        //Show vehicles that can cover the distance of planet selected
         if(vehicle.max_distance >= this.state.planetSelected[0].distance) {
           if(vehicle.total_no - count.length === 0 && vehicle.name !== this.state.selectedVehicle[0].name) {
             return (
