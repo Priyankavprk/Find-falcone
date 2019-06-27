@@ -9,6 +9,10 @@ find the Queen.<br>
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.<br>
 
+### `Dependencies`
+
+node version 10.9.0 and npm version 6.2.0
+
 ### `nmp install`
 
 From inside the project directory in your terminal run this command to install all the
